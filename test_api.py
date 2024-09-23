@@ -49,6 +49,19 @@ def check_repository_exists(repo_name):
         return False
 
 
+def delete_repository(repo_name):
+    """Удалить репозиторий на GitHub."""
+    url = f"{GITHUB_API_URL}/repos/{config.GITHUB_USERNAME}/{repo_name}"
+    response = requests.delete(url, headers=HEADERS)
+
+    if response.status_code == 204:
+        print(f"Репозиторий '{repo_name}' успешно удалён.")
+    else:
+        print(f"Ошибка при удалении репозитория: {response.json()}")
+    return response.status_code == 204
+
+
 if __name__ == "__main__":
     create_repository('my-test-api')
     check_repository_exists('my-test-api')
+    delete_repository('my-test-api')
