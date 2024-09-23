@@ -29,5 +29,26 @@ def create_repository(repo_name):
     return response.status_code == 201
 
 
+def check_repository_exists(repo_name):
+    """Проверить, существует ли репозиторий в списке репозиториев."""
+    url = f"{GITHUB_API_URL}/users/{config.GITHUB_USERNAME}/repos"
+
+    response = requests.get(url, headers=HEADERS)
+
+    if response.status_code == 200:
+        repos = response.json()
+        repo_names = [repo['name'] for repo in repos]
+        if repo_name in repo_names:
+            print(f"Репозиторий '{repo_name}' найден.")
+            return True
+        else:
+            print(f"Репозиторий '{repo_name}' не найден.")
+            return False
+    else:
+        print(f"Ошибка при получении списка репозиториев: {response.json()}")
+        return False
+
+
 if __name__ == "__main__":
     create_repository('my-test-api')
+    check_repository_exists('my-test-api')
