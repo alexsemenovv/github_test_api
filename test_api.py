@@ -61,7 +61,29 @@ def delete_repository(repo_name):
     return response.status_code == 204
 
 
+def test_github_api():
+    """Тестирует создание, проверку и удаление репозитория."""
+    repo_name = "my-test-api"
+
+    print("Создание репозитория...")
+    created = create_repository(repo_name)
+    if not created:
+        return
+
+    # Ждём несколько секунд, чтобы репозиторий появился в списке
+    time.sleep(5)
+
+    print("Проверка репозитория...")
+    exists = check_repository_exists(repo_name)
+    if not exists:
+        return
+
+    print("Удаление репозитория...")
+    deleted = delete_repository(repo_name)
+    if not deleted:
+        return
+
+    print("Тест успешно завершен.")
+
 if __name__ == "__main__":
-    create_repository('my-test-api')
-    check_repository_exists('my-test-api')
-    delete_repository('my-test-api')
+    test_github_api()
